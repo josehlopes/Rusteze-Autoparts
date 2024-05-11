@@ -10,8 +10,8 @@ class App {
         let admin = "admin";
         let client = "client";
         try {
-            let partRepository = new PartRepository();
-            let userRepository = new UserRepository();
+            let partRepository = await new PartRepository();
+            let userRepository = await new UserRepository();
 
             for (let i = 1; i <= 5; i++) {
                 let part = {
@@ -33,6 +33,9 @@ class App {
                 await userRepository.add(user);
                 console.log(`Usuário "${user.name}" adicionado com sucesso.`);
             }
+
+            let parts = await partRepository.getAll();
+            console.log("Partes:", parts,"\n");
 
             console.log("Inicializações completadas com sucesso.");
         } catch (error) {

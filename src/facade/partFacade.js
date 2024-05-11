@@ -18,8 +18,6 @@ class PartFacade {
   
       return "Peça não encontrada";
     }
-
-    
   
     async getAll() {
     if (this.PartApplication.getAll()) {

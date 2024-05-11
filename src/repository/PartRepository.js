@@ -8,6 +8,7 @@ class PartRepository {
             const row = await Part.create(part);
             return row;
         } catch (error) {
+            console.error(error);
             throw new Error('Erro ao criar um admin');
         }
     }
