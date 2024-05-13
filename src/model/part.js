@@ -29,8 +29,13 @@ module.exports = (sequelize, DataTypes) => {
           type: DataTypes.DECIMAL(10, 2),
           allowNull: false,
         },
+        imgSrc: {
+          type: DataTypes.STRING,
+          allowNull: true,
+        },
+        
       },
-      { timestamps: false, freezeTableName: true }
+      { timestamps: true, freezeTableName: true }
     );
   
     return Part;

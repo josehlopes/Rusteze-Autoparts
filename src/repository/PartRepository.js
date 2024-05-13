@@ -3,26 +3,41 @@ const { Part } = require("../data/dbContext");
 class PartRepository {
     constructor() { }
 
-    async add(part) {
+    async add(req) {
+        const {data} = req;
+
         try {
-            const row = await Part.create(part);
+            const row = await Part.create(data);
             return row;
         } catch (error) {
             console.error(error);
             throw new Error('Erro ao criar um admin');
         }
     }
-
-    async getPartById(id) {
+    async test(data) {
         try {
-            const row = await Part(Sequelize, DataTypes).findByPk(id);
+            const row = await Part.create(data);
             return row;
         } catch (error) {
-            throw new Error('Erro ao encontrar o admin');
+            console.error(error);
+            throw new Error('Erro ao criar uma parte');
         }
     }
 
-    async update(id, data) {
+    async getPartById(id) {
+        try {
+            const product = await Part.findOne({
+                where: { id },
+            });
+            return product;
+        } catch (error) {
+            console.error('Erro ao buscar peça por ID:', error);
+            throw new Error('Erro ao encontrar a peça no banco de dados');
+        }
+    }
+
+    async update(req) {
+        const {id, data} = req;
         try {
             const [updatedRowsCount, updatedPart] = await Part.update(data, {
                 where: { id },
@@ -31,14 +46,17 @@ class PartRepository {
             if (updatedRowsCount === 0) throw new Error('Admin não encontrado');
             return updatedPart[0];
         } catch (error) {
+            console.error("Erro ao atualizar peças:", error);
             throw new Error('Erro ao atualizar o admin');
         }
     }
 
-    async delete(id) {
+    async delete(req) {
+        const {id} = req;
         try {
             const deletedRowCount = await Part.destroy({
-                where: { id }
+                where: { id },
+                returning: true,
             });
             if (deletedRowCount === 0) throw new Error('Admin não encontrado');
         } catch (error) {

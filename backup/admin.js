@@ -1,7 +1,7 @@
 var form = document.getElementById("myForm"),
     imgInput = document.querySelector(".img"),
     file = document.getElementById("imgInput"),
-    partName = document.getElementById("name"),
+    userName = document.getElementById("name"),
     supplier = document.getElementById("age"),
     quantity = document.getElementById("city"),
     buy_price = document.getElementById("email"),
@@ -42,6 +42,7 @@ file.onchange = function(){
         alert("This file is too large!")
     }
 }
+
 
 
 function showInfo(){

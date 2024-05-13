@@ -39,4 +39,5 @@ const User = require("../model/user.js")(sequelize, DataTypes);
 const UserLog = require("../model/userLog.js")(sequelize, DataTypes);
 
 
+
 module.exports = { Part, PartLog, User, UserLog };  

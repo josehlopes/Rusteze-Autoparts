@@ -22,7 +22,7 @@
 
         <div class="row">
             <div class="col-12">
-                <button class="btn btn-primary newPart" data-bs-toggle="modal" data-bs-target="#partForm">Nova peça <i class="bi bi-people"></i></button>
+                <button class="btn btn-primary newPart headerBtn" data-bs-toggle="modal" data-bs-target="#partForm">Nova peça <i class="bi bi-people"></i></button>
             </div>
         </div>
 
@@ -52,13 +52,13 @@
 
 
     <!--Modal Form-->
-    <div class="modal fade" id="parForm">
+    <div class="modal fade" id="partForm">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
 
                 <div class="modal-header">
                     <h4 class="modal-title">Cadastro da peça</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close headerBtn" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
                 <div class="modal-body">
@@ -70,17 +70,18 @@
                                 <input type="file" name="" id="imgInput">
                                 <i class="bi bi-plus-circle-dotted"></i>
                             </label>
-                            <img src="./image/Profile Icon.webp" alt="" width="200" height="200" class="img">
+                            <!-- <img src="./image/Profile Icon.webp" alt="" width="200" height="200" class="img"> -->
                         </div>
 
                         <div class="inputField">
+                            <input type="text" name="id" id="indexUpdate" required hidden>
                             <div>
                                 <label for="name">Nome:</label>
-                                <input type="text" name="" id="name" required>
+                                <input type="text" name="nameForm" id="name" required>
                             </div>
                             <div>
                                 <label for="supplier">Fornecedor:</label>
-                                <input type="text" name="" id="supllier" required>
+                                <input type="text" name="supplier" id="supplier" required>
                             </div>
                             <div>
                                 <label for="quantity">Quantidade:</label>
@@ -99,20 +100,20 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="submit" form="myForm" class="btn btn-primary submit">Cadastrar</button>
+                    <button type="button" class="btn closeBtn" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" form="myForm" class="btn submit footerBtn" onclick="submitUpdate()">Salvar</button>
                 </div>
             </div>
         </div>
     </div>
 
     <!--Read Data Modal-->
-    <div class="modal fade" id="readData">
+    <div class="modal fade" id="viewData">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h4 class="modal-title">Profile</h4>
+                    <h4 class="modal-title">Perfil</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
@@ -130,12 +131,12 @@
                                 <input type="text" name="" id="showName" disabled>
                             </div>
                             <div>
-                                <label for="supllier">Fornecedor:</label>
-                                <input type="number" name="" id="showSupllier" disabled>
+                                <label for="supplier">Fornecedor:</label>
+                                <input type="number" name="" id="showSupplier" disabled>
                             </div>
                             <div>
                                 <label for="stock">Estoque:</label>
-                                <input type="text" name="" id="showSupllier" disabled>
+                                <input type="text" name="" id="showStock" disabled>
                             </div>
                             <div>
                                 <label for="buyPrice">Preço de compra:</label>
@@ -143,7 +144,7 @@
                             </div>
                             <div>
                                 <label for="sellPrice">Preço de venda:</label>
-                                <input type="number name=" id="showSellPrice"disabled>
+                                <input type="number" name=""id="showSellPrice"disabled>
                             </div>
                             <div>
                         </div>
@@ -155,7 +156,9 @@
     </div>
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../script/admin.js"></script>
 
-    <script src="../script/frontend.js"></script>
   </body>
 </html>

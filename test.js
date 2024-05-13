@@ -9,19 +9,36 @@ class App {
     async init() {
         let admin = "admin";
         let client = "client";
+        const paths = [
+            '../img/item/bomba.jpg',
+            '../img/item/cadeirinha.jpg',
+            '../img/item/cambio.jpg',
+            '../img/item/canetavidro.jpg',
+            '../img/item/carregador.jpg',
+            '../img/item/cheirinho.jpg',
+            '../img/item/motor.jpg',
+            '../img/item/roda.jpg',
+            '../img/item/roda2.jpg',
+            '../img/item/vidros.jpg'
+        ];
+        
+        
         try {
             let partRepository = await new PartRepository();
             let userRepository = await new UserRepository();
 
             for (let i = 1; i <= 5; i++) {
+                const randomPathIndex = Math.floor(Math.random() * paths.length);
+                const randomPath = paths[randomPathIndex];
                 let part = {
                     name: faker.commerce.product(),
                     supplier: faker.company.name(), 
                     stock: faker.number.int({ min: 1, max: 999 }),
                     purchase_price: faker.commerce.price({ min: 100, max: 200 }),
-                    sale_value: faker.commerce.price({ min: 130, max: 260 }) 
+                    sale_value: faker.commerce.price({ min: 130, max: 260 }) ,
+                    imgSrc: randomPath
                 };
-                await partRepository.add(part);
+                await partRepository.test(part);
                 console.log(`Parte "${part.name}" adicionada com sucesso.`);
             }
 
@@ -34,10 +51,6 @@ class App {
                 console.log(`Usuário "${user.name}" adicionado com sucesso.`);
             }
 
-            let parts = await partRepository.getAll();
-            console.log("Partes:", parts,"\n");
-
-            console.log("Inicializações completadas com sucesso.");
         } catch (error) {
             console.error("Erro na inicialização:", error);
         }
