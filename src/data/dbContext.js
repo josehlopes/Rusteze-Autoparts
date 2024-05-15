@@ -1,8 +1,6 @@
 const dbConfig = require('../config/dbConfig.js');
 const { Sequelize, DataTypes } = require('sequelize');
-
-console.log("Dialeto: " + dbConfig.DIALECT);
-
+const part = require('../model/part.js');
 
     const sequelize = new Sequelize(
     dbConfig.DB,
@@ -34,10 +32,18 @@ sequelize
     });
 
 const Part = require("../model/part.js")(sequelize, DataTypes);
-const PartLog = require("../model/partLog.js")(sequelize, DataTypes);
-const User = require("../model/user.js")(sequelize, DataTypes);
-const UserLog = require("../model/userLog.js")(sequelize, DataTypes);
+const Sale = require("../model/sale.js")(sequelize, DataTypes);
+const SaleItem = require("../model/saleItem.js")(sequelize, DataTypes);
 
+Sale.hasMany(SaleItem, {
+  foreignKey: 'sale_id',
+});
+SaleItem.belongsTo(Sale, {
+  foreignKey: 'sale_id',
+});
 
+SaleItem.belongsTo(Part, {
+  foreignKey: 'part_id',
+});
 
-module.exports = { Part, PartLog, User, UserLog };  
+module.exports = { Part, Sale, SaleItem};  

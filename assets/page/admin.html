@@ -1,164 +1,229 @@
 <!doctype html>
 <html lang="pt-br">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <!-- Bootstrap CSS -->
 
-    <!--Bootstrap 5 icons CDN-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+            crossorigin="anonymous">
+        <!--Bootstrap 5 icons CDN-->
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+        <script
+            src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
 
-    <title>Rust-eze Admin.</title>
+        <title>Rust-eze Admin.</title>
 
-    <link rel="stylesheet" href="../css/admin.css" type="text/css">
-  </head>
-  <body>
-    
+        <link rel="stylesheet" href="../css/admin.css" type="text/css">
 
-    <section class="p-3">
+    </head>
+    <body>
 
-        <div class="row">
-            <div class="col-12">
-                <button class="btn btn-primary newPart headerBtn" data-bs-toggle="modal" data-bs-target="#partForm">Nova peça <i class="bi bi-people"></i></button>
-            </div>
-        </div>
+        <section class="p-3">
 
-        <div class="row">
-            <div class="col-12">
-                <table class="table table-striped table-hover mt-3 text-center table-bordered">
+            <div class="row">
+                <div class="col-12">
+                    <button class="btn btn-primary newPart headerBtn"
+                        data-bs-toggle="modal" data-bs-target="#partForm">Nova
+                        peça <i class="bi bi-people"></i></button>
+                    <button class="btn btn-primary newPart headerBtn"
+                        data-bs-toggle="modal"
+                        data-bs-target="#calendarModal">Abrir Calendário <i
+                            class="bi bi-calendar"></i></button>
 
-                    <thead>
-                        <tr>
-                            <th>Cod.</th>
-                            <th>Imagem</th>
-                            <th>Nome</th>
-                            <th>Fornecedor</th>
-                            <th>Estoque</th>
-                            <th>Preço de compra</th>
-                            <th>Preço de venda</th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="data"></tbody>
-
-                </table>
-            </div>
-        </div>
-
-    </section>
-
-
-    <!--Modal Form-->
-    <div class="modal fade" id="partForm">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <h4 class="modal-title">Cadastro da peça</h4>
-                    <button type="button" class="btn-close headerBtn" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-
-                <div class="modal-body">
-
-                    <form action="#" id="myForm">
-
-                        <div class="card imgholder">
-                            <label for="imgInput" class="upload">
-                                <input type="file" name="" id="imgInput">
-                                <i class="bi bi-plus-circle-dotted"></i>
-                            </label>
-                            <!-- <img src="./image/Profile Icon.webp" alt="" width="200" height="200" class="img"> -->
-                        </div>
-
-                        <div class="inputField">
-                            <input type="text" name="id" id="indexUpdate" required hidden>
-                            <div>
-                                <label for="name">Nome:</label>
-                                <input type="text" name="nameForm" id="name" required>
-                            </div>
-                            <div>
-                                <label for="supplier">Fornecedor:</label>
-                                <input type="text" name="supplier" id="supplier" required>
-                            </div>
-                            <div>
-                                <label for="quantity">Quantidade:</label>
-                                <input type="number" name="" id="quantity" required>
-                            </div>
-                            <div>
-                                <label for="buyPrice">Preço de compra:</label>
-                                <input type="number" name="" id="buyPrice" required>
-                            </div>
-                            <div>
-                                <label for="sellPrice">Preço de venda:</label>
-                                <input type="number" name="" id="sellPrice" required>
-                        </div>
-
-                    </form>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn closeBtn" data-bs-dismiss="modal">Fechar</button>
-                    <button type="submit" form="myForm" class="btn submit footerBtn" onclick="submitUpdate()">Salvar</button>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!--Read Data Modal-->
-    <div class="modal fade" id="viewData">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <h4 class="modal-title">Perfil</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-
-                <div class="modal-body">
-
-                    <form action="#" id="myForm">
-
-                        <div class="card imgholder">
-                            <img src="../img/admin/holder.png" alt="" width="200" height="200" class="showImg">
+            <!-- Modal do Calendário -->
+            <div class="modal fade" id="calendarModal" tabindex="-1"
+                aria-labelledby="calendarModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title"
+                                id="calendarModalLabel">Calendário</h5>
+                            <button type="button" class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Fechar"></button>
                         </div>
-
-                        <div class="inputField">
-                            <div>
-                                <label for="name">Nome:</label>
-                                <input type="text" name="" id="showName" disabled>
-                            </div>
-                            <div>
-                                <label for="supplier">Fornecedor:</label>
-                                <input type="number" name="" id="showSupplier" disabled>
-                            </div>
-                            <div>
-                                <label for="stock">Estoque:</label>
-                                <input type="text" name="" id="showStock" disabled>
-                            </div>
-                            <div>
-                                <label for="buyPrice">Preço de compra:</label>
-                                <input type="number" name="" id="showBuyPrice" disabled>
-                            </div>
-                            <div>
-                                <label for="sellPrice">Preço de venda:</label>
-                                <input type="number" name=""id="showSellPrice"disabled>
-                            </div>
-                            <div>
+                        <div class="modal-body">
+                            <div id='calendar'></div>
                         </div>
-
-                    </form>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                data-bs-dismiss="modal">Fechar</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="../script/admin.js"></script>
 
-  </body>
-</html>
+            <div class="row">
+                <div class="col-12">
+                    <table
+                        class="table table-striped table-hover mt-3 text-center table-bordered">
+
+                        <thead>
+                            <tr>
+                                <th>Cod.</th>
+                                <th>Imagem</th>
+                                <th>Nome</th>
+                                <th>Fornecedor</th>
+                                <th>Estoque</th>
+                                <th>Preço de compra</th>
+                                <th>Preço de venda</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="data"></tbody>
+
+                    </table>
+                </div>
+            </div>
+
+        </section>
+
+        <!--Modal Form-->
+        <div class="modal fade" id="partForm">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h4 class="modal-title">Cadastro da peça</h4>
+                        <button type="button" class="btn-close headerBtn"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <form action="#" id="myForm">
+
+                            <div class="card imgholder">
+                                <label for="imgInput" class="upload">
+                                    <input type="file" name="img" id="imgInput">
+                                    <i class="bi bi-plus-circle-dotted"></i>
+                                </label>
+                            </div>
+
+                            <div class="inputField">
+                                <input type="text" name="id" id="indexUpdate"
+                                    required hidden>
+                                <div>
+                                    <label for="name">Nome:</label>
+                                    <input type="text" name="nameForm" id="name"
+                                        required>
+                                </div>
+                                <div>
+                                    <label for="supplier">Fornecedor:</label>
+                                    <input type="text" name="supplier"
+                                        id="supplier" required>
+                                </div>
+                                <div>
+                                    <label for="quantity">Quantidade:</label>
+                                    <input type="number" name id="quantity"
+                                        required>
+                                </div>
+                                <div>
+                                    <label for="buyPrice">Preço de
+                                        compra:</label>
+                                    <input type="number" name id="buyPrice"
+                                        required>
+                                </div>
+                                <div>
+                                    <label for="sellPrice">Preço de
+                                        venda:</label>
+                                    <input type="number" name id="sellPrice"
+                                        required>
+                                </div>
+
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn closeBtn"
+                                data-bs-dismiss="modal">Fechar</button>
+                            <button type="submit" form="myForm"
+                                class="btn submit footerBtn"
+                                onclick="submitUpdate()">Salvar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Read Data Modal-->
+            <div class="modal fade" id="viewData">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h4 class="modal-title">Perfil</h4>
+                            <button type="button" class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <form action="#" id="myForm">
+
+                                <div class="card imgholder">
+                                    <img src="../img/admin/holder.png" alt
+                                        width="200" height="200"
+                                        class="showImg">
+                                </div>
+
+                                <div class="inputField">
+                                    <div>
+                                        <label for="name">Nome:</label>
+                                        <input type="text" id="showName"
+                                            disabled>
+                                    </div>
+                                    <div>
+                                        <label
+                                            for="supplier">Fornecedor:</label>
+                                        <input type="number"
+                                            id="showSupplier" disabled>
+                                    </div>
+                                    <div>
+                                        <label for="stock">Estoque:</label>
+                                        <input type="text" id="showStock"
+                                            disabled>
+                                    </div>
+                                    <div>
+                                        <label for="buyPrice">Preço de
+                                            compra:</label>
+                                        <input type="number"
+                                            id="showBuyPrice" disabled>
+                                    </div>
+                                    <div>
+                                        <label for="sellPrice">Preço de
+                                            venda:</label>
+                                        <input type="number"
+                                            id="showSellPrice" disabled>
+                                    </div>
+                                    <div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Option 1: Bootstrap Bundle with Popper -->
+                <script
+                    src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+                    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+                    crossorigin="anonymous"></script>
+                <script
+                    src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+                <script
+                    src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                <script src="../script/admin.js"></script>
+
+            </body>
+        </html>

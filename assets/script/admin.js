@@ -13,6 +13,44 @@ const modal = document.getElementById("partForm");
 const modalTitle = document.querySelector("#partForm .modal-title");
 const newPartBtn = document.querySelector(".newPart");
 
+$('#calendarModal').on('shown.bs.modal', function () {
+  var calendarEl = document.getElementById('calendar');
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+      locale: 'pt-br',
+      navLinks: true,
+      selectMirror: true,
+      editable: true,
+      events: function(info, successCallback, failureCallback) {
+          fetch('http://localhost:3000/sales')
+              .then(response => {
+                  if (!response.ok) {
+                      throw new Error('Erro ao buscar vendas');
+                  }
+                  return response.json();
+              })
+              .then(data => {
+                  var events = data.map(sale => {
+                      return {
+                          title: `Venda: ${sale.id}`,
+                          start: sale.createdAt,
+                          allDay: true 
+                      };
+                  });
+
+                  successCallback(events);
+              })
+              .catch(error => {
+                  console.error('Erro ao buscar vendas:', error);
+                  failureCallback(error);
+              });
+      }
+  });
+
+  calendar.render();
+});
+
+
+
 let isEdit = false;
 
 newPartBtn.addEventListener("click", () => {
@@ -65,6 +103,7 @@ async function addInfo() {
   const supplierValue = supplier.value;
   const quantityValue = quantity.value;
   const buy_priceValue = buy_price.value;
+  const imageValue = file.value;
   const sell_priceValue = sell_price.value;
 
   const payload = {
@@ -74,6 +113,7 @@ async function addInfo() {
       stock: quantityValue,
       purchase_price: buy_priceValue,
       sale_value: sell_priceValue,
+      imgSrc: imageValue,
     },
   };
 
@@ -83,6 +123,14 @@ async function addInfo() {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(payload),
+  });
+
+  fetchDataAndRender();
+
+  Swal.fire({
+    title: "Tudo Certo!",
+    text: "O item foi cadastrado com sucesso!",
+    icon: "success"
   });
 }
 
@@ -122,15 +170,9 @@ async function submitUpdate() {
       stock: quantityValue,
       purchase_price: buy_priceValue,
       sale_value: sell_priceValue,
+      imgSrc: '../img/item/motor.jpg'
     },
   };
-  /**
-   * RESTFULL
-   * get -> buscar
-   * post -> cadastrar
-   * put -> atualizar
-   * delete -> deletar
-   */
 
   const response = await fetch(`http://localhost:3000/parts`, {
     method: "PUT",
@@ -146,6 +188,9 @@ async function submitUpdate() {
       text: "O item foi atualizado com sucesso!",
       icon: "success"
     });
+
+    fetchDataAndRender();
+
    }
    else {
     Swal.fire({
@@ -158,24 +203,51 @@ async function submitUpdate() {
 }
 
 async function deleteInfo(id) {
-  indexUpdate.value = id;
-  const index = indexUpdate.value;
-
-  const payload = {
-    id: index,
-  };
-  const response = await fetch(`http://localhost:3000/parts`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
+  const { value: confirmed } = await Swal.fire({
+    title: "Você tem certeza?",
+    text: "Esta ação não poderá ser revertida!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Sim, deletar!",
   });
 
-  // if(response.status === 200){
 
-  // }
+
+  if (confirmed) {
+    const payload = {
+        id: id
+    }
+    try {
+      const response = await fetch(`http://localhost:3000/parts`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      
+      if (response.ok) {
+        Swal.fire({
+          title: "Deletado!",
+          text: "Seu item foi deletado com sucesso.",
+          icon: "success",
+        });
+        fetchDataAndRender();
+      } else {
+        throw new Error("Falha ao deletar o item.");
+      }
+    } catch (error) {
+      Swal.fire({
+        title: "Erro!",
+        text: "Falha ao deletar o item. Por favor, tente novamente.",
+        icon: "error",
+      });
+    }
+  }
 }
+
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -196,17 +268,14 @@ form.addEventListener("submit", (e) => {
     isEdit = false;
     parts[editId] = information;
   }
-  submitBtn.innerText = "Submit";
-  modalTitle.innerHTML = "Fill The Form";
+  submitBtn.innerText = "Enviar";
+  modalTitle.innerHTML = "Preencha os dados!";
 
   showInfo();
 
   form.reset();
 
   imgInput.src = "./image/Profile Icon.webp";
-
-  // modal.style.display = "none"
-  // document.querySelector(".modal-backdrop").remove()
 });
 async function fetchDataAndRender() {
   try {

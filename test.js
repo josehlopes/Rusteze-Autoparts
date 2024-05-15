@@ -1,5 +1,4 @@
 const PartRepository = require("./src/repository/PartRepository");
-const UserRepository = require("./src/repository/UserRepository");
 const { faker } = require('@faker-js/faker');
 
 class App {
@@ -7,8 +6,8 @@ class App {
     }
 
     async init() {
-        let admin = "admin";
-        let client = "client";
+
+        
         const paths = [
             '../img/item/bomba.jpg',
             '../img/item/cadeirinha.jpg',
@@ -25,9 +24,8 @@ class App {
         
         try {
             let partRepository = await new PartRepository();
-            let userRepository = await new UserRepository();
 
-            for (let i = 1; i <= 5; i++) {
+            for (let i = 1; i <= 15; i++) {
                 const randomPathIndex = Math.floor(Math.random() * paths.length);
                 const randomPath = paths[randomPathIndex];
                 let part = {
@@ -40,15 +38,6 @@ class App {
                 };
                 await partRepository.test(part);
                 console.log(`Parte "${part.name}" adicionada com sucesso.`);
-            }
-
-            for (let i = 1; i <= 5; i++) {
-                let user = {
-                    name: faker.person.fullName(),
-                    function: Math.random() < 0.5 ? admin : client
-                };
-                await userRepository.add(user);
-                console.log(`Usuário "${user.name}" adicionado com sucesso.`);
             }
 
         } catch (error) {
